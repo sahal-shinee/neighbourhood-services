@@ -43,19 +43,6 @@ jobs:
         run: |
           sudo apt-get install -y lftp
 
-          cat > /tmp/deploy.lftp << 'LFTP_EOF'
-          set ftp:ssl-allow no
-          set net:max-retries 3
-          set net:reconnect-interval-base 5
-          mirror -R --parallel=5 \
-            --exclude-glob .git \
-            --exclude-glob .github \
-            --exclude-glob node_modules \
-            --exclude-glob .env \
-            --exclude-glob .env.production \
-            --exclude-glob README.md \
-            . /
-          bye
-          LFTP_EOF
+          MIRROR_CMD="mirror -R --parallel=5 --exclude-glob .git --exclude-glob .github --exclude-glob node_modules --exclude-glob .env --exclude-glob .env.production --exclude-glob README.md . /"
 
-          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" -f /tmp/deploy.lftp
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" -e "set ftp:ssl-allow no; set net:max-retries 3; $MIRROR_CMD; bye"
