@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export COMPOSER_HOME=/home/msny1714/.composer
-    - /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction 2>&1
+    - /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
