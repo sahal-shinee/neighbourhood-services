@@ -24,8 +24,10 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-      - name: Zip vendor folder
-        run: zip -r vendor.zip vendor/ && rm -rf vendor/
+      - name: Zip vendor & hapus folder besar
+        run: |
+          zip -r vendor.zip vendor/
+          rm -rf vendor/ node_modules/
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -46,4 +48,4 @@ jobs:
         run: |
           sudo apt-get install -y lftp
           MIRROR_CMD="mirror -R --parallel=5 --exclude-glob .git --exclude-glob .github --exclude-glob node_modules --exclude-glob .env --exclude-glob .env.production --exclude-glob README.md . /"
-          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" -e "set ftp:ssl-allow no; set ftp:use-site-symlink no; set net:max-retries 3; $MIRROR_CMD; bye"
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" -e "set ftp:ssl-allow no; set net:max-retries 3; $MIRROR_CMD; bye"
