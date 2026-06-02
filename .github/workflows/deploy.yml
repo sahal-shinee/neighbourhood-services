@@ -24,10 +24,8 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-      - name: Zip vendor & hapus folder besar
-        run: |
-          zip -r vendor.zip vendor/
-          rm -rf vendor/ node_modules/
+      - name: Zip vendor folder
+        run: zip -r vendor.zip vendor/ && rm -rf vendor/
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -35,10 +33,11 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install NPM & Build Assets
+      - name: Install NPM, Build Assets & Hapus node_modules
         run: |
           npm ci
           npm run build
+          rm -rf node_modules/
 
       - name: Deploy via FTP
         env:
