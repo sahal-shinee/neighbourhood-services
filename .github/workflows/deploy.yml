@@ -7,46 +7,12 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Trigger cPanel Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP 8.2
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          extensions: gd, mbstring, xml, zip, pdo, pdo_mysql
-          coverage: none
-
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
-
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install NPM & Build Assets
+      - name: Trigger cPanel Git Pull
         run: |
-          npm ci
-          npm run build
-
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .env
-            .env.*
-            README.md
-            **/README.md
+          curl -s -o /dev/null -w "%{http_code}" -X POST \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_TOKEN }}" \
+            "${{ secrets.CPANEL_URL }}/execute/VersionControl/update?repository_root=${{ secrets.REPO_PATH }}"
