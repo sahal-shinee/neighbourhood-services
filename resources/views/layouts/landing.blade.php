@@ -93,7 +93,32 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Mobile Navigation Buttons -->
+                <div class="flex md:hidden items-center gap-2">
+                    @auth
+                        @php
+                            $dashboardRouteMobile = 'dashboard';
+                            if(auth()->user()->isAdmin()) $dashboardRouteMobile = 'admin.dashboard';
+                            if(auth()->user()->isPenyedia()) $dashboardRouteMobile = 'penyedia.dashboard';
+                            if(auth()->user()->isPelanggan()) $dashboardRouteMobile = 'pelanggan.dashboard';
+                        @endphp
+                        <a href="{{ route($dashboardRouteMobile) }}"
+                           class="px-4 py-2 bg-brand-600 text-white rounded-full font-bold text-sm transition-all shadow-md active:scale-95">
+                            Dashboard &rarr;
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="px-3 py-2 text-gray-600 font-semibold text-sm hover:text-brand-600 transition-colors">
+                            Masuk
+                        </a>
+                        <a href="{{ route('register') }}"
+                           class="px-4 py-2 bg-brand-600 text-white rounded-full font-bold text-sm transition-all shadow-md active:scale-95">
+                            Daftar
+                        </a>
+                    @endauth
+                </div>
+
+                <!-- Desktop Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
                     @auth
                         @php
@@ -102,16 +127,16 @@
                             if(auth()->user()->isPenyedia()) $dashboardRoute = 'penyedia.dashboard';
                             if(auth()->user()->isPelanggan()) $dashboardRoute = 'pelanggan.dashboard';
                         @endphp
-                        <a href="{{ route($dashboardRoute) }}" 
+                        <a href="{{ route($dashboardRoute) }}"
                            class="px-6 py-2.5 bg-brand-600 text-white hover:bg-brand-700 rounded-full font-bold transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 relative overflow-hidden group">
                             <span class="relative z-10">Masuk ke Dashboard &rarr;</span>
                         </a>
                     @else
-                        <a href="{{ route('login') }}" 
+                        <a href="{{ route('login') }}"
                            class="font-semibold text-gray-600 hover:text-brand-600 transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-brand-600 after:transition-all after:duration-300 hover:after:w-full">
                             Masuk
                         </a>
-                        <a href="{{ route('register') }}" 
+                        <a href="{{ route('register') }}"
                            class="px-6 py-2.5 bg-brand-600 text-white hover:bg-brand-700 rounded-full font-bold transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 relative overflow-hidden group">
                            <span class="relative z-10">Daftar Sekarang</span>
                         </a>

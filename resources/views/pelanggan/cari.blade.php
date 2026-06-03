@@ -41,7 +41,39 @@ document.addEventListener('DOMContentLoaded', function () {
 @section('content')
 
 {{-- ── Search Panel ──────────────────────────────────────────────────────── --}}
-<div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-7 sm:p-9 mb-8">
+<div x-data="{ showFilter: false }" class="mb-8">
+
+{{-- Mobile: Quick Search Bar (always visible) --}}
+<div class="md:hidden mb-3">
+    <form action="{{ route('pelanggan.cari') }}" method="GET">
+        <input type="hidden" name="lat" value="{{ $lat }}">
+        <input type="hidden" name="lng" value="{{ $lng }}">
+        <div class="flex items-center gap-2">
+            <div class="relative flex-1">
+                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <input type="text" name="keyword" value="{{ $keyword }}"
+                    placeholder="Cari jasa..."
+                    class="block w-full bg-white border border-gray-200 text-gray-900 rounded-2xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 shadow-sm">
+            </div>
+            <button type="submit" class="bg-brand-600 text-white px-4 py-3 rounded-2xl font-bold text-sm shadow-md active:scale-95 whitespace-nowrap">Cari</button>
+            <button type="button" @click="showFilter = !showFilter"
+                class="flex items-center gap-1 px-3 py-3 rounded-2xl border font-bold text-xs transition-all"
+                :class="showFilter ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-gray-600 border-gray-200'">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                </svg>
+                Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+{{-- Full Filter Panel (always on desktop, collapsible on mobile) --}}
+<div :class="showFilter ? 'block' : 'hidden'" class="md:block bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-7 sm:p-9">
     <form id="search-form" action="{{ route('pelanggan.cari') }}" method="GET" class="space-y-6">
 
         <input type="hidden" name="lat" id="lat" value="{{ $lat }}">
@@ -133,7 +165,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         @endif
     </form>
-</div>
+</div>{{-- end full filter panel --}}
+</div>{{-- end x-data wrapper --}}
 
 {{-- ── Results Header ─────────────────────────────────────────────────────── --}}
 <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -169,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 {{-- ── Results Grid ────────────────────────────────────────────────────────── --}}
 @if($jasa->total() > 0)
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         @foreach($jasa as $j)
             <x-service-card :jasa="$j" :isFavorit="in_array($j->id_jasa, $favoritIds)" />
         @endforeach
