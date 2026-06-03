@@ -24,27 +24,50 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-      - name: Zip vendor folder
-        run: zip -r vendor.zip vendor/ && rm -rf vendor/
-
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install NPM, Build Assets & Hapus node_modules
+      - name: Build Assets & Clean
         run: |
           npm ci
           npm run build
           rm -rf node_modules/
 
-      - name: Deploy via FTP
+      - name: Create deployment zip
+        run: |
+          zip -r deploy.zip . \
+            --exclude=".git/*" \
+            --exclude=".github/*" \
+            --exclude=".env" \
+            --exclude=".env.production" \
+            --exclude="README.md" \
+            --exclude="deploy.zip"
+
+      - name: Upload deploy.zip via FTP
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
-          sudo apt-get install -y lftp
-          MIRROR_CMD="mirror -R --parallel=5 --exclude-glob .git --exclude-glob .github --exclude-glob node_modules --exclude-glob .env --exclude-glob .env.production --exclude-glob README.md . /"
-          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" -e "set ftp:ssl-allow no; set net:max-retries 3; $MIRROR_CMD; bye"
+          curl -T deploy.zip "ftp://$FTP_HOST/deploy.zip" \
+            --user "$FTP_USER:$FTP_PASS" \
+            --ftp-create-dirs \
+            --retry 3 \
+            --retry-delay 5 \
+            --max-time 300
+
+      - name: Trigger extraction on server
+        run: |
+          HTTP_STATUS=$(curl -s -o /tmp/response.txt -w "%{http_code}" \
+            "http://neighservices.msnverse.my.id/deploy.php?token=${{ secrets.DEPLOY_TOKEN }}")
+          echo "--- Server Response ---"
+          cat /tmp/response.txt
+          echo ""
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "Extraction failed! HTTP status: $HTTP_STATUS"
+            exit 1
+          fi
+          echo "Deploy successful!"
