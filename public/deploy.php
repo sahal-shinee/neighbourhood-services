@@ -72,10 +72,21 @@ $zip->close();
 // ─── Hapus zip setelah ekstraksi berhasil ───
 @unlink($zipPath);
 
-// ─── Bersihkan cache Laravel (config/route/services) agar perubahan terbaca ───
-foreach (glob(__DIR__ . '/../bootstrap/cache/*.php') ?: [] as $cacheFile) {
-    @unlink($cacheFile);
+// ─── Bersihkan cache Laravel agar perubahan kode langsung terbaca ───
+$cacheGlobs = [
+    __DIR__ . '/../bootstrap/cache/*.php',        // config/route/services cache
+    __DIR__ . '/../storage/framework/views/*.php', // compiled Blade views (WAJIB, agar tampilan ter-update)
+    __DIR__ . '/../storage/framework/cache/data/*', // application cache
+];
+
+$cleared = 0;
+foreach ($cacheGlobs as $pattern) {
+    foreach (glob($pattern) ?: [] as $cacheFile) {
+        if (is_file($cacheFile) && @unlink($cacheFile)) {
+            $cleared++;
+        }
+    }
 }
 
 http_response_code(200);
-echo 'OK: Deploy berhasil (' . $fileCount . ' file) pada ' . date('Y-m-d H:i:s');
+echo 'OK: Deploy berhasil (' . $fileCount . ' file, ' . $cleared . ' cache dibersihkan) pada ' . date('Y-m-d H:i:s');
