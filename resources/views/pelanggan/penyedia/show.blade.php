@@ -47,7 +47,7 @@
                             </svg>
                         @endfor
                     </div>
-                    <span class="text-base font-black text-gray-800">{{ $penyedia->rating_rata_rata }}</span>
+                    <span class="text-base font-black text-gray-800">{{ number_format($penyedia->rating_rata_rata ?? 0, 1) }}</span>
                     <span class="text-xs font-semibold text-gray-400">({{ $ulasan->count() }} ulasan)</span>
                 </div>
             </div>

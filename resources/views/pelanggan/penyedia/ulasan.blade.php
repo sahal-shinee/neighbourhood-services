@@ -39,7 +39,7 @@
                     @endif
 
                     <div class="mt-4 pt-4 border-t border-gray-50 flex items-center justify-center gap-2">
-                        <span class="text-3xl font-black text-gray-900">{{ $penyedia->rating_rata_rata }}</span>
+                        <span class="text-3xl font-black text-gray-900">{{ number_format($penyedia->rating_rata_rata ?? 0, 1) }}</span>
                         <div class="text-left">
                             <div class="flex gap-0.5">
                                 @for($i=1; $i<=5; $i++)
