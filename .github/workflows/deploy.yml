@@ -46,12 +46,20 @@ jobs:
             --exclude="README.md" \
             --exclude="deploy.zip"
 
-      - name: Upload deploy.zip via FTP
+      - name: Upload files via FTP
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
+          # 1. Upload deploy.php dulu (bootstrap hook ekstraksi)
+          curl -T public/deploy.php "ftp://$FTP_HOST/public/deploy.php" \
+            --user "$FTP_USER:$FTP_PASS" \
+            --ftp-create-dirs \
+            --retry 3 \
+            --retry-delay 5 \
+            --max-time 120
+          # 2. Upload deploy.zip (berisi seluruh aplikasi)
           curl -T deploy.zip "ftp://$FTP_HOST/deploy.zip" \
             --user "$FTP_USER:$FTP_PASS" \
             --ftp-create-dirs \
