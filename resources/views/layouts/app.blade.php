@@ -50,6 +50,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
+        /* Sembunyikan elemen Alpine sebelum diinisialisasi (mencegah modal berkedip) */
+        [x-cloak] { display: none !important; }
+
         /* Hide Microsoft Edge / IE native password reveal button */
         input::-ms-reveal,
         input::-ms-clear {

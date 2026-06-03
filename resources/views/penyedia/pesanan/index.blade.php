@@ -202,7 +202,7 @@
                                     <span class="font-normal text-indigo-400 mx-0.5">–</span>
                                     {{ \Carbon\Carbon::parse($p->jam_selesai)->format('H:i') }}
                                 </p>
-                                @php $jam = \Carbon\Carbon::parse($p->jam_selesai)->diffInHours(\Carbon\Carbon::parse($p->jam_mulai)); @endphp
+                                @php $jam = abs(\Carbon\Carbon::parse($p->jam_selesai)->diffInHours(\Carbon\Carbon::parse($p->jam_mulai))); @endphp
                                 <span class="inline-block mt-1.5 bg-indigo-100 text-indigo-700 text-[10px] font-black px-3 py-1 rounded-full">
                                     {{ $p->jasa->tipe_tarif === 'per_jam' ? $jam . ' Jam' : '1 Pengerjaan' }}
                                 </span>

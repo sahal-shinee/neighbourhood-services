@@ -94,66 +94,13 @@
                         @error('no_telepon') <p class="text-xs text-rose-500 mt-1 font-semibold">{{ $message }}</p> @enderror
                     </div>
 
-                    {{-- Alamat --}}
-                    <div>
-                        <label for="alamat" class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2">Alamat Pangkalan/Basis Operasi <span class="text-rose-500">*</span></label>
-                        <textarea id="alamat" name="alamat" rows="3" required
-                            class="block w-full rounded-2xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm font-medium text-gray-800 placeholder-gray-400 transition-all duration-200 hover:bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 focus:outline-none resize-none"
-                            placeholder="Jl. Contoh No. 1, Kecamatan, Kota...">{{ old('alamat', $user->alamat) }}</textarea>
-                        <p class="text-[11px] text-gray-400 font-medium mt-1.5">Digunakan untuk menghitung jarak ke lokasi pelanggan.</p>
-                        @error('alamat') <p class="text-xs text-rose-500 mt-1 font-semibold">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Koordinat Lokasi --}}
-                    <div x-data="{
-                        lat: '{{ old('latitude', $user->latitude) }}',
-                        lng: '{{ old('longitude', $user->longitude) }}',
-                        status: '',
-                        detecting: false,
-                        detect() {
-                            if (!navigator.geolocation) { this.status = 'Browser tidak mendukung GPS.'; return; }
-                            this.detecting = true;
-                            this.status = 'Mendeteksi lokasi...';
-                            navigator.geolocation.getCurrentPosition(
-                                (pos) => {
-                                    this.lat = pos.coords.latitude.toFixed(7);
-                                    this.lng = pos.coords.longitude.toFixed(7);
-                                    this.status = 'Lokasi berhasil dideteksi.';
-                                    this.detecting = false;
-                                },
-                                () => {
-                                    this.status = 'Gagal. Pastikan izin lokasi sudah diberikan.';
-                                    this.detecting = false;
-                                },
-                                { enableHighAccuracy: true, timeout: 10000 }
-                            );
-                        }
-                    }">
-                        <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1">Koordinat Lokasi Operasi</label>
-                        <p class="text-[11px] text-gray-400 font-medium mb-3">Digunakan agar pelanggan dapat menemukan Anda dalam pencarian berbasis jarak.</p>
-                        <div class="grid grid-cols-2 gap-3 mb-3">
-                            <div>
-                                <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5 block">Latitude</label>
-                                <input type="text" name="latitude" x-model="lat" placeholder="-6.2000000"
-                                    class="block w-full rounded-2xl border border-gray-200 bg-gray-50/50 px-4 py-2.5 text-sm font-medium text-gray-800 placeholder-gray-400 transition-all duration-200 hover:bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5 block">Longitude</label>
-                                <input type="text" name="longitude" x-model="lng" placeholder="106.8166667"
-                                    class="block w-full rounded-2xl border border-gray-200 bg-gray-50/50 px-4 py-2.5 text-sm font-medium text-gray-800 placeholder-gray-400 transition-all duration-200 hover:bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 focus:outline-none">
-                            </div>
-                        </div>
-                        <button type="button" @click="detect()"
-                            class="inline-flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-black text-xs px-4 py-2.5 rounded-xl transition-all active:scale-95"
-                            :disabled="detecting">
-                            <svg class="w-3.5 h-3.5" :class="{'animate-spin': detecting}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <span x-text="detecting ? 'Mendeteksi...' : 'Deteksi Lokasi Saya'"></span>
-                        </button>
-                        <p x-show="status" x-text="status" class="text-xs font-bold mt-2"
-                           :class="status.includes('berhasil') ? 'text-emerald-600' : 'text-rose-500'"></p>
-                    </div>
+                    {{-- Lokasi & Alamat dengan Peta Interaktif --}}
+                    <x-location-picker
+                        label="Alamat Pangkalan/Basis Operasi"
+                        hint="Klik pada peta, geser pin, atau cari lokasi basis operasi Anda. Alamat & koordinat akan terisi otomatis."
+                        :alamat="old('alamat', $user->alamat)"
+                        :lat="old('latitude', $user->latitude)"
+                        :lng="old('longitude', $user->longitude)" />
 
                     {{-- Submit --}}
                     <div class="pt-4 border-t border-gray-100 flex justify-end">

@@ -307,7 +307,7 @@
                 $bgColor     = $isPaket ? '#7c3aed' : '#4f46e5';
                 $durationLabel = $isPaket
                     ? ($p->estimasi_hari ?? 1) . ' Hari'
-                    : \Carbon\Carbon::parse($p->jam_selesai)->diffInHours(\Carbon\Carbon::parse($p->jam_mulai)) . ' Jam';
+                    : abs(\Carbon\Carbon::parse($p->jam_selesai)->diffInHours(\Carbon\Carbon::parse($p->jam_mulai))) . ' Jam';
                 $paketNama = $isPaket && $p->paket ? $p->paket->nama_paket : '';
                 $waNumber  = preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $p->pelanggan->no_telepon));
             @endphp

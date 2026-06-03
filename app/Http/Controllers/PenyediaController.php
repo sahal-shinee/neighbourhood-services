@@ -66,7 +66,8 @@ class PenyediaController extends Controller
                       // per_jam: hitung dari durasi
                       $mulai   = \Carbon\Carbon::parse($pesanan->jam_mulai);
                       $selesai = \Carbon\Carbon::parse($pesanan->jam_selesai);
-                      $jam     = max(0, $selesai->diffInHours($mulai));
+                      // abs() penting: di Carbon 3 diffInHours bisa negatif tergantung urutan argumen
+                      $jam     = abs($selesai->diffInHours($mulai));
                       return $jam * (float) $pesanan->jasa->tarif_per_jam;
                   })
         ];

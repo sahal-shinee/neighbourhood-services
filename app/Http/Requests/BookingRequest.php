@@ -103,7 +103,7 @@ class BookingRequest extends FormRequest
 
                 if ($selesai->lte($mulai)) {
                     $v->errors()->add('jam_selesai', 'Jam selesai harus lebih besar dari jam mulai.');
-                } elseif ($selesai->diffInHours($mulai) > 12) {
+                } elseif (abs($selesai->diffInHours($mulai)) > 12) {
                     $v->errors()->add('jam_selesai', 'Durasi booking tidak boleh lebih dari 12 jam.');
                 }
             }

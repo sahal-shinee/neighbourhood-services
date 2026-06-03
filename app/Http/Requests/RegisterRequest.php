@@ -37,6 +37,9 @@ class RegisterRequest extends FormRequest
             'email'        => ['required', 'string', 'email', 'max:150', 'unique:pengguna,email'],
             'no_telepon'   => ['required', 'string', 'max:20'],
             'alamat'       => ['required', 'string'],
+            // Koordinat dari peta interaktif (opsional, diisi otomatis saat klik peta)
+            'latitude'     => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude'    => ['nullable', 'numeric', 'between:-180,180'],
             // Peran hanya boleh salah satu dari dua nilai ini
             'peran'        => ['required', Rule::in(['pelanggan', 'penyedia'])],
             // foto_ktp wajib ada JIKA peran yang dipilih adalah 'penyedia'

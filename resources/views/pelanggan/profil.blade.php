@@ -94,70 +94,13 @@
                         @error('no_telepon') <p class="text-xs text-red-500 mt-1.5 font-medium">{{ $message }}</p> @enderror
                     </div>
 
-                    <!-- Alamat Lengkap with Inline SVG -->
-                    <div>
-                        <label for="alamat" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Alamat Rumah Lengkap</label>
-                        <div class="relative flex items-start">
-                            <span class="absolute left-4 top-3.5 text-gray-400">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            </span>
-                            <textarea id="alamat" name="alamat" rows="3" required 
-                                class="block w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl pl-12 pr-4 py-3.5 focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 focus:bg-white transition-all sm:text-base font-medium resize-none outline-none">{{ old('alamat', $user->alamat) }}</textarea>
-                        </div>
-                        <p class="text-[11px] text-gray-400 font-semibold mt-1.5 pl-1">Tulis detail lengkap seperti nomor rumah, blok, RT/RW, dan patokan terdekat.</p>
-                        @error('alamat') <p class="text-xs text-red-500 mt-1.5 font-medium">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Koordinat Lokasi dengan GPS --}}
-                    <div x-data="{
-                        lat: '{{ old('latitude', $user->latitude) }}',
-                        lng: '{{ old('longitude', $user->longitude) }}',
-                        status: '',
-                        detecting: false,
-                        detect() {
-                            if (!navigator.geolocation) { this.status = 'Browser tidak mendukung GPS.'; return; }
-                            this.detecting = true;
-                            this.status = 'Mendeteksi lokasi...';
-                            navigator.geolocation.getCurrentPosition(
-                                (pos) => {
-                                    this.lat = pos.coords.latitude.toFixed(7);
-                                    this.lng = pos.coords.longitude.toFixed(7);
-                                    this.status = 'Lokasi berhasil dideteksi.';
-                                    this.detecting = false;
-                                },
-                                (err) => {
-                                    this.status = 'Gagal mendeteksi lokasi. Pastikan izin lokasi sudah diberikan.';
-                                    this.detecting = false;
-                                },
-                                { enableHighAccuracy: true, timeout: 10000 }
-                            );
-                        }
-                    }">
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Koordinat Lokasi</label>
-                        <p class="text-[11px] text-gray-400 font-semibold mb-3">Koordinat ini digunakan untuk menampilkan jasa terdekat di sekitar Anda. Klik tombol deteksi untuk mengisi otomatis.</p>
-                        <div class="grid grid-cols-2 gap-3 mb-3">
-                            <div>
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1 block">Latitude</label>
-                                <input type="text" name="latitude" x-model="lat" placeholder="-6.2000000"
-                                    class="block w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all text-sm font-medium outline-none">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1 block">Longitude</label>
-                                <input type="text" name="longitude" x-model="lng" placeholder="106.8166667"
-                                    class="block w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all text-sm font-medium outline-none">
-                            </div>
-                        </div>
-                        <button type="button" @click="detect()"
-                            class="inline-flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-bold text-xs px-4 py-2.5 rounded-xl transition-all"
-                            :disabled="detecting">
-                            <svg class="w-4 h-4" :class="{'animate-spin': detecting}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <span x-text="detecting ? 'Mendeteksi...' : 'Deteksi Lokasi Saya'"></span>
-                        </button>
-                        <p x-show="status" x-text="status" class="text-xs font-semibold mt-2"
-                           :class="status.includes('berhasil') ? 'text-emerald-600' : 'text-rose-500'"></p>
-                    </div>
+                    {{-- Lokasi & Alamat dengan Peta Interaktif --}}
+                    <x-location-picker
+                        label="Alamat Rumah Lengkap"
+                        hint="Klik pada peta, geser pin, atau cari alamat rumah Anda. Alamat & koordinat akan terisi otomatis."
+                        :alamat="old('alamat', $user->alamat)"
+                        :lat="old('latitude', $user->latitude)"
+                        :lng="old('longitude', $user->longitude)" />
 
                     <!-- Save Action Button -->
                     <div class="pt-4 flex justify-end">

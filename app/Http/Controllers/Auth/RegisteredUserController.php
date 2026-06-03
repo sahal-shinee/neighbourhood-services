@@ -73,6 +73,8 @@ class RegisteredUserController extends Controller
             'email'             => $data['email'],
             'no_telepon'        => $data['no_telepon'],
             'alamat'            => $data['alamat'],
+            'latitude'          => $data['latitude'] ?? null,
+            'longitude'         => $data['longitude'] ?? null,
             'peran'             => $data['peran'],
             'status_verifikasi' => $statusVerifikasi,
             'foto_ktp'          => $fotoKtpPath,

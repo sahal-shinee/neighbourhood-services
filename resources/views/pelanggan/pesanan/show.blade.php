@@ -95,7 +95,7 @@
                         </span>
                     </div>
                     @php
-                        $durasi = \Carbon\Carbon::parse($pesanan->jam_selesai)->diffInHours(\Carbon\Carbon::parse($pesanan->jam_mulai));
+                        $durasi = abs(\Carbon\Carbon::parse($pesanan->jam_selesai)->diffInHours(\Carbon\Carbon::parse($pesanan->jam_mulai)));
                         $totalBiaya = $pesanan->jasa->tipe_tarif === 'per_jam'
                             ? $durasi * (float)$pesanan->jasa->tarif_per_jam
                             : (float)$pesanan->jasa->tarif_per_jam;
