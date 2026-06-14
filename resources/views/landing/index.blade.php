@@ -96,6 +96,7 @@
                             </svg>
                             <input type="text" name="keyword"
                                 placeholder="Cari jasa: servis AC, bersih rumah, les privat..."
+                                aria-label="Cari jasa"
                                 class="w-full py-3 border-0 focus:ring-0 text-gray-900 placeholder-gray-400 font-medium text-sm outline-none bg-transparent">
                         </div>
                         <button type="submit"
@@ -590,13 +591,13 @@
         <div class="relative max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
 
             {{-- Nav buttons --}}
-            <button @click="advance(-1)"
+            <button @click="advance(-1)" aria-label="Testimoni sebelumnya"
                 class="absolute -left-5 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white rounded-full border border-gray-200 shadow-md flex items-center justify-center text-gray-400 hover:text-brand-600 hover:border-brand-300 hover:shadow-lg active:scale-95 transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button @click="advance(1)"
+            <button @click="advance(1)" aria-label="Testimoni berikutnya"
                 class="absolute -right-5 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white rounded-full border border-gray-200 shadow-md flex items-center justify-center text-gray-400 hover:text-brand-600 hover:border-brand-300 hover:shadow-lg active:scale-95 transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
             </button>
 
             {{-- Slides --}}
@@ -937,26 +938,6 @@
         </div>
     </div>
 </section>
-
-{{-- ── Footer ─────────────────────────────────────────────────────────────── --}}
-<footer class="bg-gray-950 text-gray-400 py-8 px-6">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-sm font-medium">
-            &copy; {{ date('Y') }} <span class="text-white font-bold">Neighbourhood Services</span>. Hak cipta dilindungi.
-        </p>
-        <div class="flex items-center gap-6">
-            <a href="{{ route('terms') }}"
-               class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">
-                Syarat &amp; Ketentuan
-            </a>
-            <span class="w-px h-4 bg-gray-700"></span>
-            <a href="{{ route('privacy') }}"
-               class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">
-                Kebijakan Privasi
-            </a>
-        </div>
-    </div>
-</footer>
 
 @endsection
 

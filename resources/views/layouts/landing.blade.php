@@ -3,18 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Neighbourhood Services - Jasa Profesional Terbaik</title>
+    <meta name="description" content="Platform jasa hiper-lokal yang menghubungkan warga dengan penyedia jasa terdekat. Temukan servis AC, kebersihan rumah, les privat, dan banyak layanan lainnya di lingkungan Anda.">
+    <meta name="theme-color" content="#2563eb">
+    <title>@yield('title', 'Neighbourhood Services - Jasa Profesional Terbaik')</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- AOS Animation CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS Animation CSS (non-render-blocking) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></noscript>
 
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -83,11 +85,11 @@
             <div class="flex justify-between items-center">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('landing') }}" class="flex items-center gap-3.5 group">
+                    <a href="{{ route('landing') }}" class="flex items-center gap-2 sm:gap-3.5 group">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white bg-brand-600 shadow-sm transition-all duration-300 transform group-hover:rotate-12">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3zm0 2.83l5.5 4.98V18h-2v-6H8.5v6h-2v-7.19L12 5.83z"/></svg>
                         </div>
-                        <span class="text-2xl font-extrabold tracking-tight text-gray-900 group-hover:text-brand-600 transition-colors">
+                        <span class="text-lg sm:text-2xl font-extrabold tracking-tight text-gray-900 group-hover:text-brand-600 transition-colors">
                             Neighbourhood
                         </span>
                     </a>
@@ -197,8 +199,6 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- Typed.js -->
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
         // Initialize AOS
