@@ -64,7 +64,7 @@
 <body class="font-sans antialiased text-gray-900 bg-gray-50 selection:bg-brand-500 selection:text-white" x-data="{ scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 50)">
 
     <!-- Liquid Curtain Page Transition Overlay -->
-    <div id="page-curtain" class="fixed inset-0 z-[99999] bg-gradient-to-br from-brand-600 via-indigo-600 to-indigo-900 pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] translate-y-0 flex items-center justify-center">
+    <div id="page-curtain" class="fixed inset-0 z-[99999] bg-gradient-to-br from-brand-600 via-indigo-600 to-indigo-900 pointer-events-none transition-transform duration-[850ms] ease-[cubic-bezier(0.4,0,0.2,1)] translate-y-0 flex items-center justify-center">
         <!-- Pulse central white brand badge -->
         <div class="flex flex-col items-center gap-4 transition-opacity duration-300" id="curtain-content">
             <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-brand-600 shadow-xl border-4 border-white/20 animate-pulse">
@@ -207,7 +207,7 @@
             const curtain = document.getElementById('page-curtain');
             const content = document.getElementById('curtain-content');
             if (!curtain) return;
-            curtain.style.transitionDuration = '400ms';
+            curtain.style.transitionDuration = '650ms';
             if (content) content.style.opacity = '0';
             curtain.style.transform = 'translateY(-105%)';
         }

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" fill="white">
+<style>
+  /* Star twinkle */
+  .tw  { animation: tw 3.2s ease-in-out infinite; }
+  .tw2 { animation: tw 4.8s ease-in-out infinite 1.3s; }
+  .tw3 { animation: tw 2.9s ease-in-out infinite 2.4s; }
+  .tw4 { animation: tw 5.6s ease-in-out infinite 0.7s; }
+  .tw5 { animation: tw 3.8s ease-in-out infinite 3.1s; }
+  @keyframes tw {
+    0%, 100% { opacity: 0.28; }
+    50%      { opacity: 0.06; }
+  }
+  /* Window flicker (occasional) */
+  .wk  { animation: wk 14s ease-in-out infinite; }
+  .wk2 { animation: wk 18s ease-in-out infinite 5s; }
+  .wk3 { animation: wk 11s ease-in-out infinite 8s; }
+  .wk4 { animation: wk 22s ease-in-out infinite 2s; }
+  @keyframes wk {
+    0%, 85%, 100% { opacity: 0.28; }
+    87%, 89%      { opacity: 0.07; }
+    88%           { opacity: 0.34; }
+  }
+</style>
+
+  <!-- Moon -->
+  <circle cx="462" cy="128" r="72"  opacity="0.025"/>
+  <circle cx="462" cy="128" r="50"  opacity="0.045"/>
+  <circle cx="462" cy="128" r="33"  opacity="0.17"/>
+
+  <!-- Stars (animated twinkle) -->
+  <circle cx="72"  cy="80"  r="2.2" class="tw"/>
+  <circle cx="168" cy="52"  r="1.8" class="tw2"/>
+  <circle cx="290" cy="65"  r="2.0" class="tw3"/>
+  <circle cx="392" cy="38"  r="1.6" class="tw4"/>
+  <circle cx="538" cy="88"  r="1.8" class="tw5"/>
+
+  <!-- Horizon glow + ground -->
+  <ellipse cx="300" cy="720" rx="310" ry="40" opacity="0.04"/>
+  <path d="M0,720 Q150,705 300,715 Q450,725 600,710 L600,900 L0,900 Z" opacity="0.08"/>
+
+  <!-- ── BUILDING 1: Small cottage, far left ── -->
+  <rect x="15"  y="632" width="86"  height="88"  rx="3" opacity="0.13"/>
+  <polygon points="11,632 58,586 105,632"                 opacity="0.21"/>
+  <rect x="28"  y="645" width="16"  height="20"  rx="2" opacity="0.28"/>
+  <rect x="59"  y="645" width="16"  height="20"  rx="2" class="wk"/>
+  <rect x="28"  y="672" width="16"  height="20"  rx="2" class="wk2"/>
+  <rect x="59"  y="672" width="16"  height="20"  rx="2" opacity="0.28"/>
+
+  <!-- ── BUILDING 2: Flat-roof modern ── -->
+  <rect x="94"  y="592" width="92"  height="128" rx="3" opacity="0.12"/>
+  <rect x="90"  y="584" width="100" height="13"  rx="3" opacity="0.20"/>
+  <rect x="110" y="610" width="17"  height="22"  rx="2" opacity="0.28"/>
+  <rect x="143" y="610" width="17"  height="22"  rx="2" class="wk3"/>
+  <rect x="110" y="642" width="17"  height="22"  rx="2" class="wk"/>
+  <rect x="143" y="642" width="17"  height="22"  rx="2" opacity="0.28"/>
+  <rect x="110" y="674" width="17"  height="22"  rx="2" opacity="0.28"/>
+  <rect x="143" y="674" width="17"  height="22"  rx="2" class="wk4"/>
+
+  <!-- ── BUILDING 3: Tall narrow, pitched ── -->
+  <rect x="180" y="548" width="56"  height="172" rx="3" opacity="0.12"/>
+  <polygon points="176,548 208,504 240,548"               opacity="0.20"/>
+  <rect x="190" y="567" width="13"  height="17"  rx="2" opacity="0.28"/>
+  <rect x="212" y="567" width="13"  height="17"  rx="2" class="wk3"/>
+  <rect x="190" y="598" width="13"  height="17"  rx="2" class="wk"/>
+  <rect x="212" y="598" width="13"  height="17"  rx="2" opacity="0.28"/>
+  <rect x="190" y="629" width="13"  height="17"  rx="2" opacity="0.28"/>
+  <rect x="212" y="629" width="13"  height="17"  rx="2" class="wk2"/>
+  <rect x="190" y="660" width="13"  height="17"  rx="2" class="wk4"/>
+  <rect x="212" y="660" width="13"  height="17"  rx="2" opacity="0.28"/>
+
+  <!-- ── BUILDING 4: HERO — wide, pitched (focal point) ── -->
+  <rect x="228" y="558" width="154" height="162" rx="3" opacity="0.16"/>
+  <polygon points="224,558 305,472 386,558"               opacity="0.26"/>
+  <!-- Hero windows 3×3 -->
+  <rect x="247" y="578" width="23"  height="28"  rx="2" opacity="0.30"/>
+  <rect x="283" y="578" width="23"  height="28"  rx="2" class="wk3"/>
+  <rect x="319" y="578" width="23"  height="28"  rx="2" opacity="0.30"/>
+  <rect x="247" y="618" width="23"  height="28"  rx="2" class="wk2"/>
+  <rect x="283" y="618" width="23"  height="28"  rx="2" opacity="0.30"/>
+  <rect x="319" y="618" width="23"  height="28"  rx="2" class="wk"/>
+  <rect x="247" y="658" width="23"  height="28"  rx="2" opacity="0.30"/>
+  <rect x="283" y="658" width="23"  height="28"  rx="2" class="wk4"/>
+  <rect x="319" y="658" width="23"  height="28"  rx="2" opacity="0.30"/>
+
+  <!-- ── BUILDING 5: Medium flat-roof, right-center ── -->
+  <rect x="376" y="577" width="82"  height="143" rx="3" opacity="0.12"/>
+  <rect x="372" y="569" width="90"  height="13"  rx="3" opacity="0.20"/>
+  <rect x="392" y="595" width="17"  height="22"  rx="2" opacity="0.28"/>
+  <rect x="427" y="595" width="17"  height="22"  rx="2" class="wk"/>
+  <rect x="392" y="629" width="17"  height="22"  rx="2" class="wk2"/>
+  <rect x="427" y="629" width="17"  height="22"  rx="2" opacity="0.28"/>
+  <rect x="392" y="663" width="17"  height="22"  rx="2" opacity="0.28"/>
+  <rect x="427" y="663" width="17"  height="22"  rx="2" class="wk3"/>
+
+  <!-- ── BUILDING 6: Small pitched, right ── -->
+  <rect x="452" y="614" width="74"  height="106" rx="3" opacity="0.13"/>
+  <polygon points="448,614 489,572 530,614"               opacity="0.21"/>
+  <rect x="464" y="632" width="16"  height="20"  rx="2" class="wk2"/>
+  <rect x="496" y="632" width="16"  height="20"  rx="2" opacity="0.28"/>
+  <rect x="464" y="662" width="16"  height="20"  rx="2" opacity="0.28"/>
+  <rect x="496" y="662" width="16"  height="20"  rx="2" class="wk"/>
+
+  <!-- ── BUILDING 7: Wide end, far right ── -->
+  <rect x="522" y="592" width="84"  height="128" rx="3" opacity="0.11"/>
+  <polygon points="518,592 564,550 610,592"               opacity="0.17"/>
+  <rect x="536" y="610" width="15"  height="19"  rx="2" opacity="0.27"/>
+  <rect x="566" y="610" width="15"  height="19"  rx="2" class="wk3"/>
+  <rect x="536" y="641" width="15"  height="19"  rx="2" class="wk"/>
+  <rect x="566" y="641" width="15"  height="19"  rx="2" opacity="0.27"/>
+  <rect x="536" y="672" width="15"  height="19"  rx="2" opacity="0.27"/>
+  <rect x="566" y="672" width="15"  height="19"  rx="2" class="wk4"/>
+
+</svg>

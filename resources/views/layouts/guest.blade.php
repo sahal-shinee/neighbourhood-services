@@ -129,6 +129,14 @@
                 animation: slideInUpMobile 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             }
         }
+
+        /* Floating stats card gentle bob */
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px); }
+            50%      { transform: translateY(-10px); }
+        }
+        .float-card-1 { animation: floatCard 5s   ease-in-out infinite; }
+        .float-card-2 { animation: floatCard 6.5s ease-in-out infinite 1.5s; }
     </style>
 </head>
 <body class="font-sans antialiased text-gray-900 bg-white min-h-screen w-full flex flex-col md:flex-row relative m-0 p-0 overflow-x-hidden" x-data>
@@ -152,10 +160,10 @@
 
     <!-- Left Side: Full-height, full-width edge-to-edge Brand Panel with Wavy Divider & Centered Badge (Animated Layout Glide) -->
     <div class="w-full md:w-[42%] lg:w-[38%] bg-gradient-to-b from-brand-600 via-indigo-750 to-indigo-900 animate-gradient-shift animate-slide-in-left animate-slide-in-mobile relative p-10 sm:p-14 md:p-16 text-white flex flex-col justify-between flex-shrink-0 min-h-[50vh] md:min-h-screen z-10">
-        <!-- Overflow hidden wrapper for bg pattern and blurs only -->
+        <!-- Overflow hidden wrapper for bg images and blurs only -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <!-- Dot-grid pattern sebagai pengganti gambar Unsplash -->
-            <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:24px 24px;"></div>
+            <!-- Neighborhood scene illustration (lokal, tanpa cookie) -->
+            <img src="/images/neighborhood-scene.svg" class="absolute inset-0 w-full h-full object-cover opacity-100 mix-blend-overlay" alt="" aria-hidden="true">
 
             <!-- Subtle pendaran glowing blurs inside gradient panel -->
             <div class="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-white/5 filter blur-[80px] animate-pulse"></div>
@@ -204,6 +212,37 @@
         <!-- Footer trusted section (Matches reference minimal bottom bar) -->
         <div class="relative z-10 text-center text-[10px] font-bold tracking-widest text-brand-200/50 uppercase mt-8 animate-fade-in-up delay-200">
             Koneksi Lokal • Layanan Terpercaya
+        </div>
+
+        <!-- Floating Stats Card: Penyedia Aktif (top-right) -->
+        <div class="absolute top-28 right-6 hidden md:flex flex-col gap-1.5
+                    bg-white/10 backdrop-blur-md rounded-2xl px-4 py-3.5
+                    border border-white/20 float-card-1 z-10 pointer-events-none"
+             aria-hidden="true">
+            <span class="text-[9px] font-bold text-blue-200/70 uppercase tracking-widest">Penyedia Aktif</span>
+            <span class="text-white font-black text-2xl leading-none">1.200+</span>
+        </div>
+
+        <!-- Floating Stats Card: Rating (bottom-left) -->
+        <div class="absolute bottom-28 left-6 hidden md:flex flex-col gap-2
+                    bg-white/10 backdrop-blur-md rounded-2xl px-4 py-3.5
+                    border border-white/20 float-card-2 z-10 pointer-events-none"
+             aria-hidden="true">
+            <span class="text-[9px] font-bold text-blue-200/70 uppercase tracking-widest">Kepuasan Pelanggan</span>
+            <div class="flex items-center gap-2">
+                <span class="text-white font-black text-2xl leading-none">4.9</span>
+                <svg class="w-5 h-5 text-amber-300 fill-current flex-shrink-0" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+            </div>
+            <!-- Rating bar: 4.9 / 5 -->
+            <div class="flex gap-1 items-center">
+                <div class="h-1 flex-1 rounded-full bg-amber-300/80"></div>
+                <div class="h-1 flex-1 rounded-full bg-amber-300/80"></div>
+                <div class="h-1 flex-1 rounded-full bg-amber-300/80"></div>
+                <div class="h-1 flex-1 rounded-full bg-amber-300/80"></div>
+                <div class="h-1 w-2 rounded-full bg-white/25"></div>
+            </div>
         </div>
     </div>
 
