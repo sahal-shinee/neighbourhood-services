@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
     <title>@yield('title', 'Autentikasi') - Neighbourhood Services</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -150,11 +152,11 @@
 
     <!-- Left Side: Full-height, full-width edge-to-edge Brand Panel with Wavy Divider & Centered Badge (Animated Layout Glide) -->
     <div class="w-full md:w-[42%] lg:w-[38%] bg-gradient-to-b from-brand-600 via-indigo-750 to-indigo-900 animate-gradient-shift animate-slide-in-left animate-slide-in-mobile relative p-10 sm:p-14 md:p-16 text-white flex flex-col justify-between flex-shrink-0 min-h-[50vh] md:min-h-screen z-10">
-        <!-- Overflow hidden wrapper for bg images and blurs only -->
+        <!-- Overflow hidden wrapper for bg pattern and blurs only -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <!-- High-fidelity background subtle image blend -->
-            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-overlay" alt="Worker">
-            
+            <!-- Dot-grid pattern sebagai pengganti gambar Unsplash -->
+            <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:24px 24px;"></div>
+
             <!-- Subtle pendaran glowing blurs inside gradient panel -->
             <div class="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-white/5 filter blur-[80px] animate-pulse"></div>
             <div class="absolute -bottom-20 -right-20 w-80 h-80 rounded-full bg-white/5 filter blur-[80px] animate-pulse" style="animation-delay: 2s;"></div>

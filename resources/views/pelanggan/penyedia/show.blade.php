@@ -90,7 +90,7 @@
                         <div class="group relative rounded-xl overflow-hidden h-24 cursor-pointer border border-gray-100 shadow-sm"
                              x-data="" x-on:click="$dispatch('open-modal', 'porto-{{ $p->id_portofolio }}')">
                             <img src="{{ Storage::disk('public')->url($p->foto_proyek) }}"
-                                 onerror="this.src='https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=300&auto=format&fit=crop';"
+                                 onerror="this.onerror=null;this.src='/images/placeholder.svg';"
                                  alt="{{ $p->judul_proyek }}"
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Platform jasa hiper-lokal yang menghubungkan warga dengan penyedia jasa terdekat. Temukan servis AC, kebersihan rumah, les privat, dan banyak layanan lainnya di lingkungan Anda.">
     <meta name="theme-color" content="#2563eb">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
     <title>@yield('title', 'Neighbourhood Services - Jasa Profesional Terbaik')</title>
 
     <!-- Google Fonts -->

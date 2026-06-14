@@ -6,7 +6,7 @@
     <div class="relative h-28 sm:h-48 overflow-hidden flex-shrink-0">
         <img src="{{ $jasa->foto_jasa_url }}" alt="{{ $jasa->nama_jasa }}"
              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-             onerror="this.src='https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=400&auto=format&fit=crop';">
+             onerror="this.onerror=null;this.src='/images/placeholder.svg';">
         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
 
         <!-- Category Badge (top left) -->
