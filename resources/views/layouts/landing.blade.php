@@ -14,9 +14,8 @@
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- AOS Animation CSS (non-render-blocking) -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></noscript>
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -63,7 +62,7 @@
 <body class="font-sans antialiased text-gray-900 bg-gray-50 selection:bg-brand-500 selection:text-white" x-data="{ scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 50)">
 
     <!-- Liquid Curtain Page Transition Overlay -->
-    <div id="page-curtain" class="fixed inset-0 z-[99999] bg-gradient-to-br from-brand-600 via-indigo-600 to-indigo-900 pointer-events-none transition-transform duration-[750ms] ease-[cubic-bezier(0.85,0,0.15,1)] translate-y-0 flex items-center justify-center">
+    <div id="page-curtain" class="fixed inset-0 z-[99999] bg-gradient-to-br from-brand-600 via-indigo-600 to-indigo-900 pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] translate-y-0 flex items-center justify-center">
         <!-- Pulse central white brand badge -->
         <div class="flex flex-col items-center gap-4 transition-opacity duration-300" id="curtain-content">
             <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-brand-600 shadow-xl border-4 border-white/20 animate-pulse">
@@ -195,31 +194,29 @@
     </footer>
 
     <!-- Libraries -->
-    <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Typed.js -->
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <!-- AOS JS (deferred — tidak blokir render) -->
+    <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Typed.js (deferred) -->
+    <script defer src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
     <script>
-        // Initialize AOS
-        AOS.init({
-            once: true, // whether animation should happen only once - while scrolling down
-            offset: 50, // offset (in px) from the original trigger point
-            duration: 800, // values from 0 to 3000, with step 50ms
-            easing: 'ease-out-cubic', // default easing for AOS animations
-        });
-
         // Curtain Page load reveal
         function hideCurtain() {
             const curtain = document.getElementById('page-curtain');
             const content = document.getElementById('curtain-content');
             if (!curtain) return;
-            curtain.style.transitionDuration = '750ms';
-            setTimeout(() => { if (content) content.style.opacity = '0'; }, 150);
-            setTimeout(() => { curtain.style.transform = 'translateY(-105%)'; }, 200);
+            curtain.style.transitionDuration = '400ms';
+            if (content) content.style.opacity = '0';
+            curtain.style.transform = 'translateY(-105%)';
         }
-        document.addEventListener('DOMContentLoaded', hideCurtain);
-        // Also hide when browser restores page from bfcache (back/forward)
+
+        // AOS.init() dijalankan setelah deferred script AOS JS selesai dimuat
+        document.addEventListener('DOMContentLoaded', function () {
+            hideCurtain();
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ once: true, offset: 50, duration: 800, easing: 'ease-out-cubic' });
+            }
+        });
         window.addEventListener('pageshow', (e) => { if (e.persisted) hideCurtain(); });
 
         // Transition link interceptor for single-page style feel

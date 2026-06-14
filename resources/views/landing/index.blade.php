@@ -81,7 +81,7 @@
                 </h1>
 
                 {{-- Subtitle --}}
-                <p class="text-base sm:text-lg text-gray-500 mb-8 font-medium leading-relaxed">
+                <p class="text-base sm:text-lg text-gray-600 mb-8 font-medium leading-relaxed">
                     Solusi praktis, instan, dan aman untuk menyelesaikan kebutuhan
                     <span class="text-brand-600 font-extrabold border-b-2 border-brand-200" id="typed-text"></span>
                     Anda langsung di lingkungan tempat tinggal.
@@ -89,7 +89,7 @@
 
                 {{-- Search Box --}}
                 <div class="bg-white p-2 rounded-3xl border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.06)] focus-within:ring-4 focus-within:ring-brand-500/10 focus-within:border-brand-300 transition-all duration-300 mb-7">
-                    <form action="{{ route('pelanggan.cari') }}" method="GET" class="flex flex-col sm:flex-row items-stretch gap-2">
+                    <form action="{{ route('pelanggan.cari') }}" method="GET" class="flex flex-col sm:flex-row items-stretch gap-2" role="search" aria-label="Cari layanan jasa">
                         <div class="relative flex-grow flex items-center pl-4 w-full sm:border-r border-gray-100">
                             <svg class="w-[18px] h-[18px] text-gray-400 flex-shrink-0 mr-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -107,8 +107,8 @@
                 </div>
 
                 {{-- Popular tags (SVG only, no emoji) --}}
-                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-gray-500 mb-10">
-                    <span class="font-black text-gray-400 uppercase tracking-wide mr-1">Populer:</span>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-gray-600 mb-10">
+                    <span class="font-black text-gray-500 uppercase tracking-wide mr-1" aria-hidden="true">Populer:</span>
                     @foreach([
                         ['Servis AC',    'pelanggan.cari', ['kategori' => 'Reparasi Elektronik']],
                         ['Cuci Kendaraan', 'pelanggan.cari', ['kategori' => 'Perawatan Kendaraan']],
@@ -278,7 +278,7 @@
         <div class="text-center mb-16" data-aos="fade-up">
             <span class="px-4 py-1.5 bg-brand-50 border border-brand-100 text-brand-700 rounded-full font-black text-xs tracking-widest uppercase">Layanan Terbaik Kami</span>
             <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mt-4">Kategori Jasa Populer</h2>
-            <p class="text-gray-400 font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto leading-relaxed">Temukan mitra penyedia terdekat yang siap membantu segala kebutuhan harian Anda.</p>
+            <p class="text-gray-600 font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto leading-relaxed">Temukan mitra penyedia terdekat yang siap membantu segala kebutuhan harian Anda.</p>
         </div>
 
         @php
@@ -343,7 +343,7 @@
                 </div>
 
                 <h3 class="text-base font-black text-gray-900 mb-2 group-hover:text-brand-600 transition-colors">{{ $k['nama'] }}</h3>
-                <p class="text-gray-400 text-xs font-medium leading-relaxed mb-5 flex-grow">{{ $k['desc'] }}</p>
+                <p class="text-gray-600 text-xs font-medium leading-relaxed mb-5 flex-grow">{{ $k['desc'] }}</p>
 
                 <span class="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-full border border-gray-200 text-gray-600 bg-gray-50 group-hover:bg-brand-600 group-hover:text-white group-hover:border-transparent transition-all duration-300">
                     Jelajahi <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
@@ -367,7 +367,7 @@
         <div class="text-center mb-16" data-aos="fade-up">
             <span class="px-4 py-1.5 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-black text-xs tracking-widest uppercase">Keandalan Terjamin</span>
             <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mt-4">Mengapa Memilih Neighbourhood?</h2>
-            <p class="text-gray-400 font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto leading-relaxed">Kami mengedepankan keamanan, transparansi, dan kecepatan untuk kenyamanan seluruh warga.</p>
+            <p class="text-gray-600 font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto leading-relaxed">Kami mengedepankan keamanan, transparansi, dan kecepatan untuk kenyamanan seluruh warga.</p>
         </div>
 
         @php
@@ -417,7 +417,7 @@
                     </svg>
                 </div>
                 <h3 class="text-base font-black text-gray-900 mb-2">{{ $b['title'] }}</h3>
-                <p class="text-gray-400 text-sm font-medium leading-relaxed">{{ $b['desc'] }}</p>
+                <p class="text-gray-600 text-sm font-medium leading-relaxed">{{ $b['desc'] }}</p>
             </div>
             @endforeach
         </div>
@@ -434,7 +434,7 @@
         <div class="text-center mb-16" data-aos="fade-up">
             <span class="px-4 py-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-full font-black text-xs tracking-widest uppercase">Proses Alur Cepat</span>
             <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mt-4">Cara Kerja Platform</h2>
-            <p class="text-gray-400 font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto">Hanya butuh 3 langkah instan untuk mulai memesan layanan jasa tetangga terdekat Anda.</p>
+            <p class="text-gray-600 font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto">Hanya butuh 3 langkah instan untuk mulai memesan layanan jasa tetangga terdekat Anda.</p>
         </div>
 
         <div class="relative">
@@ -456,7 +456,7 @@
                         {{ $s['num'] }}
                     </div>
                     <h3 class="text-xl font-black text-gray-900 mb-3 {{ $s['hover'] }} transition-colors">{{ $s['title'] }}</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed font-medium">{{ $s['desc'] }}</p>
+                    <p class="text-gray-600 text-sm leading-relaxed font-medium">{{ $s['desc'] }}</p>
                 </div>
                 @endforeach
             </div>
@@ -571,13 +571,14 @@
                 Kisah Sukses<br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-indigo-600">Tetangga Anda</span>
             </h2>
-            <p class="text-gray-400 font-medium text-base mt-4 max-w-lg mx-auto leading-relaxed">Pengalaman nyata dari warga yang hidupnya lebih mudah dan penyedia jasa yang bisnisnya berkembang.</p>
+            <p class="text-gray-600 font-medium text-base mt-4 max-w-lg mx-auto leading-relaxed">Pengalaman nyata dari warga yang hidupnya lebih mudah dan penyedia jasa yang bisnisnya berkembang.</p>
         </div>
 
         {{-- Filter Tabs --}}
-        <div class="flex justify-center gap-2 mb-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex justify-center gap-2 mb-10" data-aos="fade-up" data-aos-delay="100" role="group" aria-label="Filter testimoni">
             @foreach(['semua' => 'Semua', 'pelanggan' => 'Pelanggan', 'penyedia' => 'Penyedia Jasa'] as $val => $label)
-            <button @click="setFilter('{{ $val }}')"
+            <button type="button" @click="setFilter('{{ $val }}')"
+                :aria-pressed="filter === '{{ $val }}'"
                 :class="filter === '{{ $val }}'
                     ? 'bg-brand-600 text-white border-brand-600 shadow-md shadow-brand-200/50'
                     : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300 hover:text-brand-600'"
@@ -591,17 +592,17 @@
         <div class="relative max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
 
             {{-- Nav buttons --}}
-            <button @click="advance(-1)" aria-label="Testimoni sebelumnya"
+            <button type="button" @click="advance(-1)" aria-label="Testimoni sebelumnya" aria-controls="testimonial-slides"
                 class="absolute -left-5 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white rounded-full border border-gray-200 shadow-md flex items-center justify-center text-gray-400 hover:text-brand-600 hover:border-brand-300 hover:shadow-lg active:scale-95 transition-all">
                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button @click="advance(1)" aria-label="Testimoni berikutnya"
+            <button type="button" @click="advance(1)" aria-label="Testimoni berikutnya" aria-controls="testimonial-slides"
                 class="absolute -right-5 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white rounded-full border border-gray-200 shadow-md flex items-center justify-center text-gray-400 hover:text-brand-600 hover:border-brand-300 hover:shadow-lg active:scale-95 transition-all">
                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
             </button>
 
             {{-- Slides --}}
-            <div class="relative overflow-hidden rounded-3xl min-h-[320px]">
+            <div id="testimonial-slides" class="relative overflow-hidden rounded-3xl min-h-[320px]" aria-live="polite" aria-atomic="true">
                 @foreach($testimonials as $idx => $t)
                 <div
                     x-show="current === {{ $idx }} && matchesFilter({{ $idx }})"
@@ -670,10 +671,14 @@
             </div>
 
             {{-- Dot indicators --}}
-            <div class="flex items-center justify-center gap-2 mt-5">
+            <div class="flex items-center justify-center gap-2 mt-5" role="tablist" aria-label="Navigasi testimoni">
                 @foreach($testimonials as $idx => $t)
-                <button @click="current={{ $idx }}; startAuto()"
+                <button type="button"
+                    @click="current={{ $idx }}; startAuto()"
                     x-show="matchesFilter({{ $idx }})"
+                    aria-label="Testimoni {{ $idx + 1 }}: {{ $t['name'] }}"
+                    :aria-selected="current === {{ $idx }}"
+                    role="tab"
                     :class="current === {{ $idx }} ? 'w-6 bg-brand-600' : 'w-2 bg-gray-300 hover:bg-gray-400'"
                     class="h-2 rounded-full transition-all duration-300">
                 </button>
@@ -843,7 +848,7 @@
                     Wujudkan Komunitas<br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-indigo-600">yang Saling Peduli</span>
                 </h2>
-                <p class="text-gray-400 font-medium text-base leading-relaxed mb-8 max-w-lg">
+                <p class="text-gray-600 font-medium text-base leading-relaxed mb-8 max-w-lg">
                     Ribuan warga sudah membuktikan kemudahan menemukan jasa profesional di lingkungan sendiri. Giliran Anda memulai perjalanan bersama platform hiper-lokal terpercaya ini.
                 </p>
 
