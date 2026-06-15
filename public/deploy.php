@@ -140,5 +140,45 @@ foreach ($requiredDirs as $dir) {
 $chmodRecursive($base . '/storage');
 $chmodRecursive($base . '/public/storage');
 
+// ─── SELF-TEST: benar-benar coba tulis file ke folder upload ───
+// Hasilnya ditulis ke public/_deploy_health.txt agar bisa diperiksa dari browser.
+// Ini membuktikan apakah upload foto akan berhasil ATAU folder masih tidak bisa ditulis.
+$health = [];
+$health[] = 'Deploy health check — ' . date('Y-m-d H:i:s');
+if (function_exists('posix_geteuid') && function_exists('posix_getpwuid')) {
+    $health[] = 'PHP user   : ' . (posix_getpwuid(posix_geteuid())['name'] ?? '?');
+} else {
+    $health[] = 'PHP user   : ' . get_current_user();
+}
+$health[] = 'storage_path: ' . $base . '/storage/app/private';
+$health[] = '';
+
+$selfTestTargets = [
+    'KTP   (disk local)  ' => $base . '/storage/app/private/ktp',
+    'Foto  (disk public) ' => $base . '/public/storage',
+];
+foreach ($selfTestTargets as $label => $dir) {
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0775, true);
+    }
+    $ada      = is_dir($dir) ? 'ADA       ' : 'TIDAK-ADA ';
+    $bisa     = is_writable($dir) ? 'WRITABLE     ' : 'NOT-WRITABLE ';
+    $testFile = $dir . '/_writetest_' . uniqid() . '.tmp';
+    $tulis    = @file_put_contents($testFile, 'ok');
+    $hasil    = ($tulis !== false) ? 'TES-TULIS: SUKSES' : 'TES-TULIS: GAGAL';
+    if ($tulis !== false) {
+        @unlink($testFile);
+    }
+    $health[] = $label . ': ' . $ada . $bisa . $hasil;
+}
+
+// Hitung jumlah file KTP yang benar-benar ada di server saat ini
+$ktpDir   = $base . '/storage/app/private/ktp';
+$ktpFiles = is_dir($ktpDir) ? array_filter(scandir($ktpDir) ?: [], fn ($f) => !in_array($f, ['.', '..'], true)) : [];
+$health[] = '';
+$health[] = 'Jumlah file KTP tersimpan di server: ' . count($ktpFiles);
+
+@file_put_contents($base . '/public/_deploy_health.txt', implode("\n", $health) . "\n");
+
 http_response_code(200);
 echo 'OK: Deploy berhasil (' . $fileCount . ' file, ' . $cleared . ' cache dibersihkan, izin folder upload diset) pada ' . date('Y-m-d H:i:s');
