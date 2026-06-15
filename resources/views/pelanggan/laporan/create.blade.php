@@ -44,7 +44,7 @@
         <input type="hidden" name="id_penyedia" value="{{ $penyedia->id_pengguna }}">
 
         {{-- Related order (optional) --}}
-        @if($pesanan->isNotEmpty())
+        @if($pesananList->isNotEmpty())
         <div>
             <label for="id_pesanan" class="block text-sm font-bold text-gray-700 mb-2">
                 Pesanan Terkait <span class="font-normal text-gray-400">(opsional)</span>
@@ -52,7 +52,7 @@
             <select id="id_pesanan" name="id_pesanan"
                 class="block w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium text-gray-700 focus:border-brand-500 focus:ring-0 outline-none">
                 <option value="">-- Tidak ada pesanan spesifik --</option>
-                @foreach($pesanan as $p)
+                @foreach($pesananList as $p)
                 <option value="{{ $p->id_pesanan }}" {{ old('id_pesanan') == $p->id_pesanan ? 'selected' : '' }}>
                     #{{ $p->id_pesanan }} — {{ $p->jasa->nama_jasa ?? 'Jasa' }} · {{ \Carbon\Carbon::parse($p->tanggal_booking)->format('d M Y') }}
                 </option>
