@@ -88,5 +88,57 @@ foreach ($cacheGlobs as $pattern) {
     }
 }
 
+// ─── Pastikan folder upload & cache ADA dan BISA DITULIS ───
+// Tanpa ini, upload foto (KTP ke storage/app/private, portfolio/jasa ke public/storage)
+// akan gagal diam-diam di server karena folder tidak punya izin tulis.
+// Karena deploy.php berjalan sebagai user PHP yang memiliki file hasil ekstraksi,
+// chmod di sini berhasil tanpa perlu akses SSH.
+$base = realpath(__DIR__ . '/..');
+
+// Buat folder jika belum ada, lalu set izin tulis 0775
+$ensureWritable = static function (string $dir): void {
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0775, true);
+    }
+    @chmod($dir, 0775);
+};
+
+// Set izin 0775 ke folder ini DAN seluruh subfolder di dalamnya secara rekursif
+$chmodRecursive = static function (string $root) use (&$chmodRecursive): void {
+    if (!is_dir($root)) {
+        return;
+    }
+    @chmod($root, 0775);
+    foreach (@scandir($root) ?: [] as $item) {
+        if ($item === '.' || $item === '..') {
+            continue;
+        }
+        $path = $root . '/' . $item;
+        if (is_dir($path)) {
+            $chmodRecursive($path);
+        }
+    }
+};
+
+// Folder wajib-tulis (dibuat jika hilang setelah ekstraksi)
+$requiredDirs = [
+    $base . '/storage/app/private',          // foto KTP (disk 'local')
+    $base . '/storage/app/public',           // cadangan upload publik
+    $base . '/storage/framework/cache/data',
+    $base . '/storage/framework/sessions',
+    $base . '/storage/framework/views',
+    $base . '/storage/logs',
+    $base . '/bootstrap/cache',
+    $base . '/public/storage',               // foto jasa/profil/portfolio (disk 'public')
+];
+
+foreach ($requiredDirs as $dir) {
+    $ensureWritable($dir);
+}
+
+// Pastikan seluruh pohon folder storage bisa ditulis
+$chmodRecursive($base . '/storage');
+$chmodRecursive($base . '/public/storage');
+
 http_response_code(200);
-echo 'OK: Deploy berhasil (' . $fileCount . ' file, ' . $cleared . ' cache dibersihkan) pada ' . date('Y-m-d H:i:s');
+echo 'OK: Deploy berhasil (' . $fileCount . ' file, ' . $cleared . ' cache dibersihkan, izin folder upload diset) pada ' . date('Y-m-d H:i:s');
