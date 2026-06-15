@@ -45,10 +45,24 @@ trait CompressesImages
         $manager = new ImageManager(new Driver());
         $image = $manager->read($file->getPathname());
         $image->scaleDown(width: $maxWidth);
-        $encoded = $image->toJpeg($quality);
+        // Cast eksplisit ke string agar adapter penyimpanan selalu menerima konten valid
+        $encoded = (string) $image->toJpeg($quality);
 
-        // Simpan ke disk yang ditentukan
-        Storage::disk($disk)->put($filename, $encoded);
+        // Simpan ke disk yang ditentukan.
+        // PENTING: disk 'local' dikonfigurasi 'throw' => false, sehingga put() akan
+        // mengembalikan false (bukan melempar error) jika gagal menulis — misalnya
+        // ketika folder storage tidak punya izin tulis di server hosting.
+        // Kita cek nilai return-nya supaya kegagalan tidak "diam-diam" membuat
+        // record database dengan path file yang sebenarnya tidak pernah tersimpan.
+        $berhasil = Storage::disk($disk)->put($filename, $encoded);
+
+        if ($berhasil === false) {
+            throw new \RuntimeException(
+                "Gagal menyimpan gambar ke disk '{$disk}' (folder: {$folder}). " .
+                "Pastikan folder 'storage' memiliki izin tulis di server (chmod 775) " .
+                "dan dimiliki oleh user web server."
+            );
+        }
 
         return $filename;
     }
