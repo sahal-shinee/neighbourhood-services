@@ -88,13 +88,22 @@ class AdminController extends Controller
     {
         $pengguna = Pengguna::findOrFail($id);
 
-        // Pastikan foto KTP ada di database dan file-nya ada di storage
-        if (!$pengguna->foto_ktp || !Storage::disk('local')->exists($pengguna->foto_ktp)) {
+        if (!$pengguna->foto_ktp) {
             abort(404, 'Foto KTP tidak ditemukan.');
         }
 
-        // Alirkan file ke browser sebagai inline image (tampil langsung, bukan download)
-        return Storage::disk('local')->response($pengguna->foto_ktp);
+        // Cek di disk 'local' saat ini (storage/app/private/)
+        if (Storage::disk('local')->exists($pengguna->foto_ktp)) {
+            return Storage::disk('local')->response($pengguna->foto_ktp);
+        }
+
+        // Fallback: cek di path lama (storage/app/) untuk file yang disimpan sebelum konfigurasi disk diperbarui
+        $fallbackPath = storage_path('app/' . $pengguna->foto_ktp);
+        if (file_exists($fallbackPath)) {
+            return response()->file($fallbackPath);
+        }
+
+        abort(404, 'Foto KTP tidak ditemukan.');
     }
 
     /**
