@@ -91,7 +91,9 @@ foreach ($cacheGlobs as $pattern) {
 // ─── Reset OPcache agar server menjalankan KODE BARU, bukan bytecode lama yang di-cache ───
 // Tanpa ini, perubahan file PHP (mis. CompressesImages.php) bisa tidak berefek di server
 // karena OPcache masih menyajikan versi lama yang sudah dikompilasi.
-$opcacheReset = function_exists('opcache_reset') ? (@opcache_reset() ? 'YA' : 'GAGAL') : 'TIDAK-AKTIF';
+if (function_exists('opcache_reset')) {
+    @opcache_reset();
+}
 
 // ─── Pastikan folder upload & cache ADA dan BISA DITULIS ───
 // Tanpa ini, upload foto (KTP ke storage/app/private, portfolio/jasa ke public/storage)
@@ -145,87 +147,10 @@ foreach ($requiredDirs as $dir) {
 $chmodRecursive($base . '/storage');
 $chmodRecursive($base . '/public/storage');
 
-// ─── SELF-TEST: benar-benar coba tulis file ke folder upload ───
-// Hasilnya ditulis ke public/_deploy_health.txt agar bisa diperiksa dari browser.
-// Ini membuktikan apakah upload foto akan berhasil ATAU folder masih tidak bisa ditulis.
-$health = [];
-$health[] = 'Deploy health check — ' . date('Y-m-d H:i:s');
-if (function_exists('posix_geteuid') && function_exists('posix_getpwuid')) {
-    $health[] = 'PHP user   : ' . (posix_getpwuid(posix_geteuid())['name'] ?? '?');
-} else {
-    $health[] = 'PHP user   : ' . get_current_user();
-}
-$health[] = 'storage_path: ' . $base . '/storage/app/private';
-$health[] = '';
-
-$selfTestTargets = [
-    'KTP   (disk local)  ' => $base . '/storage/app/private/ktp',
-    'Foto  (disk public) ' => $base . '/public/storage',
-];
-foreach ($selfTestTargets as $label => $dir) {
-    if (!is_dir($dir)) {
-        @mkdir($dir, 0775, true);
-    }
-    $ada      = is_dir($dir) ? 'ADA       ' : 'TIDAK-ADA ';
-    $bisa     = is_writable($dir) ? 'WRITABLE     ' : 'NOT-WRITABLE ';
-    $testFile = $dir . '/_writetest_' . uniqid() . '.tmp';
-    $tulis    = @file_put_contents($testFile, 'ok');
-    $hasil    = ($tulis !== false) ? 'TES-TULIS: SUKSES' : 'TES-TULIS: GAGAL';
-    if ($tulis !== false) {
-        @unlink($testFile);
-    }
-    $health[] = $label . ': ' . $ada . $bisa . $hasil;
-}
-
-// Hitung jumlah file KTP yang benar-benar ada di server saat ini
-$ktpDir   = $base . '/storage/app/private/ktp';
-$ktpFiles = is_dir($ktpDir) ? array_filter(scandir($ktpDir) ?: [], fn ($f) => !in_array($f, ['.', '..'], true)) : [];
-$health[] = '';
-$health[] = 'OPcache reset: ' . $opcacheReset;
-$health[] = 'Jumlah file KTP tersimpan di server: ' . count($ktpFiles);
-
-// ─── Daftar nama file fisik yang ADA di folder ktp ───
-$health[] = '';
-$health[] = '=== File fisik di storage/app/private/ktp/ ===';
-foreach ($ktpFiles as $f) {
-    $health[] = '  ' . $f;
-}
-
-// ─── Bandingkan path di DATABASE dengan file fisik ───
-$health[] = '';
-$health[] = '=== Path DB (penyedia pending) vs file fisik ===';
-try {
-    $dbHost = envValue('DB_HOST') ?: '127.0.0.1';
-    $dbPort = envValue('DB_PORT') ?: '3306';
-    $dbName = envValue('DB_DATABASE') ?: '';
-    $dbUser = envValue('DB_USERNAME') ?: '';
-    $dbPass = envValue('DB_PASSWORD') ?: '';
-    $pdo = new PDO(
-        "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4",
-        $dbUser,
-        $dbPass,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-    );
-    $stmt = $pdo->query(
-        "SELECT id_pengguna, email, foto_ktp FROM pengguna " .
-        "WHERE peran='penyedia' AND status_verifikasi='pending' " .
-        "ORDER BY id_pengguna DESC LIMIT 10"
-    );
-    $privateBase = $base . '/storage/app/private/';
-    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
-        $fk = $r['foto_ktp'];
-        if ($fk === null || $fk === '') {
-            $health[] = "id={$r['id_pengguna']} {$r['email']} : foto_ktp=KOSONG";
-            continue;
-        }
-        $cek = file_exists($privateBase . $fk) ? 'FILE-ADA' : 'FILE-HILANG';
-        $health[] = "id={$r['id_pengguna']} {$r['email']} : '{$fk}' -> {$cek}";
-    }
-} catch (Throwable $e) {
-    $health[] = 'DB ERROR: ' . $e->getMessage();
-}
-
-@file_put_contents($base . '/public/_deploy_health.txt', implode("\n", $health) . "\n");
+// ─── Bersihkan artefak diagnostik yang TIDAK boleh ada di produksi ───
+// File _deploy_health.txt sempat dipakai untuk debugging dan berisi data sensitif
+// (email pengguna, path server). Hapus jika masih tertinggal dari deploy sebelumnya.
+@unlink($base . '/public/_deploy_health.txt');
 
 http_response_code(200);
 echo 'OK: Deploy berhasil (' . $fileCount . ' file, ' . $cleared . ' cache dibersihkan, izin folder upload diset) pada ' . date('Y-m-d H:i:s');

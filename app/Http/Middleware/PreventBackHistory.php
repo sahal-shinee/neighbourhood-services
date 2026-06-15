@@ -37,9 +37,15 @@ class PreventBackHistory
         // Proses request ke controller terlebih dahulu, dapatkan response-nya
         $response = $next($request);
 
-        // Tambahkan header no-cache ke response sebelum dikembalikan ke browser
-        return $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-                        ->header('Pragma', 'no-cache')
-                        ->header('Expires', '0');
+        // Tambahkan header no-cache via $response->headers->set().
+        // Memakai ->headers->set() (bukan ->header()) supaya kompatibel dengan SEMUA
+        // jenis response — termasuk StreamedResponse/BinaryFileResponse yang dipakai
+        // untuk menyajikan file (mis. foto KTP). Method ->header() hanya ada di
+        // Illuminate\Http\Response, sehingga akan error fatal pada StreamedResponse.
+        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', '0');
+
+        return $response;
     }
 }
