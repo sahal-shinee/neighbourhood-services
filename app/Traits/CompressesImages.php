@@ -5,7 +5,8 @@ namespace App\Traits;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 /**
  * Trait CompressesImages
@@ -41,7 +42,8 @@ trait CompressesImages
         $filename = $folder . '/' . Str::uuid() . '.jpg';
 
         // Baca file, scale down jika lebih lebar dari maxWidth, encode ke JPEG
-        $image = Image::read($file->getPathname());
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($file->getPathname());
         $image->scaleDown(width: $maxWidth);
         $encoded = $image->toJpeg($quality);
 
