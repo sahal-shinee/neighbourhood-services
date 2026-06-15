@@ -88,6 +88,11 @@ foreach ($cacheGlobs as $pattern) {
     }
 }
 
+// ─── Reset OPcache agar server menjalankan KODE BARU, bukan bytecode lama yang di-cache ───
+// Tanpa ini, perubahan file PHP (mis. CompressesImages.php) bisa tidak berefek di server
+// karena OPcache masih menyajikan versi lama yang sudah dikompilasi.
+$opcacheReset = function_exists('opcache_reset') ? (@opcache_reset() ? 'YA' : 'GAGAL') : 'TIDAK-AKTIF';
+
 // ─── Pastikan folder upload & cache ADA dan BISA DITULIS ───
 // Tanpa ini, upload foto (KTP ke storage/app/private, portfolio/jasa ke public/storage)
 // akan gagal diam-diam di server karena folder tidak punya izin tulis.
@@ -176,7 +181,49 @@ foreach ($selfTestTargets as $label => $dir) {
 $ktpDir   = $base . '/storage/app/private/ktp';
 $ktpFiles = is_dir($ktpDir) ? array_filter(scandir($ktpDir) ?: [], fn ($f) => !in_array($f, ['.', '..'], true)) : [];
 $health[] = '';
+$health[] = 'OPcache reset: ' . $opcacheReset;
 $health[] = 'Jumlah file KTP tersimpan di server: ' . count($ktpFiles);
+
+// ─── Daftar nama file fisik yang ADA di folder ktp ───
+$health[] = '';
+$health[] = '=== File fisik di storage/app/private/ktp/ ===';
+foreach ($ktpFiles as $f) {
+    $health[] = '  ' . $f;
+}
+
+// ─── Bandingkan path di DATABASE dengan file fisik ───
+$health[] = '';
+$health[] = '=== Path DB (penyedia pending) vs file fisik ===';
+try {
+    $dbHost = envValue('DB_HOST') ?: '127.0.0.1';
+    $dbPort = envValue('DB_PORT') ?: '3306';
+    $dbName = envValue('DB_DATABASE') ?: '';
+    $dbUser = envValue('DB_USERNAME') ?: '';
+    $dbPass = envValue('DB_PASSWORD') ?: '';
+    $pdo = new PDO(
+        "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4",
+        $dbUser,
+        $dbPass,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+    $stmt = $pdo->query(
+        "SELECT id_pengguna, email, foto_ktp FROM pengguna " .
+        "WHERE peran='penyedia' AND status_verifikasi='pending' " .
+        "ORDER BY id_pengguna DESC LIMIT 10"
+    );
+    $privateBase = $base . '/storage/app/private/';
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+        $fk = $r['foto_ktp'];
+        if ($fk === null || $fk === '') {
+            $health[] = "id={$r['id_pengguna']} {$r['email']} : foto_ktp=KOSONG";
+            continue;
+        }
+        $cek = file_exists($privateBase . $fk) ? 'FILE-ADA' : 'FILE-HILANG';
+        $health[] = "id={$r['id_pengguna']} {$r['email']} : '{$fk}' -> {$cek}";
+    }
+} catch (Throwable $e) {
+    $health[] = 'DB ERROR: ' . $e->getMessage();
+}
 
 @file_put_contents($base . '/public/_deploy_health.txt', implode("\n", $health) . "\n");
 
